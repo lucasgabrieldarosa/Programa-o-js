@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Rotativo</title>
+</head>
+<body>
+
+    <img id="imgBanner" src="" alt="Banner" style="width: 100%; height: auto;">
+
+    <script>
+        var banners = ["../imagens/Flamengo.png", "../imagens/Gremio.png", "../imagens/Inter.png"];
+        var bannerAtual = 0;
+
+        function trocaBanner() {
+            bannerAtual = (bannerAtual + 1) % banners.length;
+            document.getElementById('imgBanner').src = banners[bannerAtual];
+        }
+
+        
+        setInterval(trocaBanner, 4000);
+    </script>
+    <a href="index.html">voltar</a>
+</body>
+</html>
