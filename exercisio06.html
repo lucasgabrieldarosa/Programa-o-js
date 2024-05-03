@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de CEP</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+    <h2>Consulta de CEP</h2>
+
+    <label for="cep">CEP:</label>
+    <input type="text" id="cepInput" placeholder="Digite o CEP">
+    <button onclick="consultarCEP()">Consultar</button>
+
+    <br><br>
+
+    <label for="cidade">Cidade:</label>
+    <input type="text" id="cidadeInput" placeholder="Digite a Cidade">
+    <button onclick="consultarCidade()">Consultar</button>
+
+    <br><br>
+
+    <label for="cepInicio">CEP Inicial:</label>
+    <input type="text" id="cepInicioInput" placeholder="Digite o CEP Inicial">
+    <label for="cepFim">CEP Final:</label>
+    <input type="text" id="cepFimInput" placeholder="Digite o CEP Final">
+    <button onclick="consultarIntervalo()">Consultar</button>
+
+    <br><br>
+
+    <div id="resultado"></div>
+
+    <script>
+        function consultarCEP() {
+            var cep = document.getElementById("cepInput").value;
+            if (cep) {
+                consultarWebService("cep/" + cep);
+            } else {
+                alert("Por favor, digite um CEP.");
+            }
+        }
+
+        function consultarCidade() {
+            var cidade = document.getElementById("cidadeInput").value;
+            if (cidade) {
+                consultarWebService("ws/" + cidade + "/json/");
+            } else {
+                alert("Por favor, digite uma cidade.");
+            }
+        }
+
+        function consultarIntervalo() {
+            var cepInicio = document.getElementById("cepInicioInput").value;
+            var cepFim = document.getElementById("cepFimInput").value;
+
+            if (cepInicio && cepFim) {
+                consultarWebService("faixa/" + cepInicio + "/" + cepFim + "/json/");
+            } else {
+                alert("Por favor, digite o CEP Inicial e o CEP Final.");
+            }
+        }
+
+        function consultarWebService(endpoint) {
+            $.ajax({
+                url: "https://viacep.com.br/" + endpoint,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    exibirResultado(data);
+                },
+                error: function() {
+                    alert("Erro ao consultar o serviço. Por favor, tente novamente.");
+                }
+            });
+        }
+
+        function exibirResultado(data) {
+            var resultadoDiv = document.getElementById("resultado");
+            resultadoDiv.innerHTML = "<p><strong>CEP:</strong> " + data.cep + "</p>" +
+                                     "<p><strong>Logradouro:</strong> " + data.logradouro + "</p>" +
+                                     "<p><strong>Bairro:</strong> " + data.bairro + "</p>" +
+                                     "<p><strong>Cidade/UF:</strong> " + data.localidade + "/" + data.uf + "</p>";
+        }
+    </script>
+    <a href="index.html">voltar</a>
+</body>
+</html>
